@@ -1,0 +1,25 @@
+{
+  "name": "arcadegame",
+  "version": "1.0.0",
+  "description": "Arcade game project for Udacity nano degree programm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Woldemar1086/arcadeGameProject.git"
+  },
+  "keywords": [
+    "Arcade",
+    "game",
+    "Woldemar1086",
+    "Frontend"
+  ],
+  "author": "Khodyrev Vladimir (Woldemar1086)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Woldemar1086/arcadeGameProject/issues"
+  },
+  "homepage": "https://github.com/Woldemar1086/arcadeGameProject#readme"
+}
