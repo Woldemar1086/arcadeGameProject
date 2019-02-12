@@ -5,7 +5,10 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
-            files: ['Gruntfile.js', 'src/**/*.js']
+            files: ['Gruntfile.js', 'src/**/*.js'],
+            options: {
+                'esversion': 6,
+            }
         },
         watch: {
             options: {
