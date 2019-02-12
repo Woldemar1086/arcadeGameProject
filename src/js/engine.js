@@ -14,15 +14,20 @@
  */
 
 var Engine = (function(global) {
+    var Resources = require('./resources.js'),
+        modalActions = require('./startGame.js');
+
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas element's height/width and add it to the DOM.
      */
-    var doc = global.document,
-        win = global.window,
+
+    var doc = window.document,
+        win = window.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        startPlayButton = document.querySelectorAll('.modalStart__button')[0],
+        lastTime, allEnemies;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -51,7 +56,7 @@ var Engine = (function(global) {
          * for the next time this function is called.
          */
         lastTime = now;
-
+        // console.log(dt)
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
@@ -78,7 +83,7 @@ var Engine = (function(global) {
      * on the entities themselves within your app.js file).
      */
     function update(dt) {
-        updateEntities(dt);
+        // updateEntities(dt);
         // checkCollisions();
     }
 
@@ -107,19 +112,19 @@ var Engine = (function(global) {
          * for that particular row of the game level.
          */
         var rowImages = [
-                'images/water-block.png',   // Top row is water
-                'images/stone-block.png',   // Row 1 of 3 of stone
-                'images/stone-block.png',   // Row 2 of 3 of stone
-                'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/water-block.png', // Top row is water
+                'images/stone-block.png', // Row 1 of 3 of stone
+                'images/stone-block.png', // Row 2 of 3 of stone
+                'images/stone-block.png', // Row 3 of 3 of stone
+                'images/grass-block.png', // Row 1 of 2 of grass
+                'images/grass-block.png' // Row 2 of 2 of grass
             ],
             numRows = 6,
             numCols = 5,
             row, col;
 
         // Before drawing, clear existing canvas
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
@@ -138,7 +143,7 @@ var Engine = (function(global) {
             }
         }
 
-        renderEntities();
+        // renderEntities();
     }
 
     /* This function is called by the render function and is called on each game
@@ -169,17 +174,34 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
+        // Map sources
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
+        // Enemy source
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        // Bonuses sources
+        'images/Gem_Blue.png',
+        'images/Gem_Green.png',
+        'images/Gem_Orange.png',
+        // Player sources
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
     ]);
-    Resources.onReady(init);
+    // Resources.onReady(init);
+    Resources.onReady(modalActions.addPlayersToModalStart);
 
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
     global.ctx = ctx;
+
+    startPlayButton.addEventListener('click', function(e) {
+        modalActions.closeModalStart();
+        init();
+    });
 })(this);
