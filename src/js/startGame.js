@@ -1,7 +1,7 @@
 module.exports = (function(global) {
 
-    var Resources = require('./resources.js'),
-        utils = require('./utils.js');
+    const Resources = require('./resources.js'),
+          utils = require('./utils.js');
 
     var allPlayers = [
             // Player sources

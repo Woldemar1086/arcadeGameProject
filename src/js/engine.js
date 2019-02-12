@@ -14,8 +14,8 @@
  */
 
 var Engine = (function(global) {
-    var Resources = require('./resources.js'),
-        modalActions = require('./startGame.js');
+    const Resources = require('./resources.js'),
+          modalActions = require('./startGame.js');
 
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
