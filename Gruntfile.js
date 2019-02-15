@@ -7,7 +7,8 @@ module.exports = function(grunt) {
         jshint: {
             files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
-                'esversion': 6,
+                esversion: 6,
+                debug: true
             }
         },
         watch: {
@@ -16,7 +17,7 @@ module.exports = function(grunt) {
             },
             scripts: {
                 files: ['src/**/*.js'],
-                tasks: ['jshint', 'concat', 'browserify'],
+                tasks: ['jshint', 'browserify'],
                 options: {
                     spawn: false,
                 },
@@ -120,12 +121,18 @@ module.exports = function(grunt) {
     grunt.registerTask('default', [
         'copy',
         'htmlmin',
-        'concat',
-        // 'babel',
-        'uglify',
-        'browserify',
         'cssmin',
+        'browserify',
         'jshint',
         'watch'
+    ]);
+    grunt.registerTask('build', [
+        'copy',
+        'htmlmin',
+        // 'babel',
+        'jshint',
+        'browserify',
+        'uglify',
+        'cssmin'
     ]);
 };
