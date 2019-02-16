@@ -1,8 +1,8 @@
-const initGame = require('./engine.js').initGame,
+const initGame = require('./resources/engine.js').initGame,
     closeModalStart = require('./startGame.js').closeModalStart,
     choosePlayer = require('./startGame.js').choosePlayer,
-    player = require('./app.js').player,
-    init = require('./engine.js'),
+    player = require('./players/player.js').player,
+    init = require('./resources/engine.js'),
     utils = require('./utils/utils.js');
 
 var startPlayButton = document.querySelectorAll('.modalStart__button')[0];
@@ -20,6 +20,15 @@ choosePlayerEl.addEventListener('click', function(e) {
     }
     choosePlayer(e);
     player.activePlayer();
+});
+
+
+// This listens for buton start game
+startPlayButton.addEventListener('click', function(e) {
+    if (player.getPlayerActivity()) {
+        closeModalStart();
+        initGame();
+    }
 });
 
 // This listens for key presses and sends the keys to your
