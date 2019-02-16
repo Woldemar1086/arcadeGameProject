@@ -36,9 +36,17 @@ Enemy.prototype.render = function(dt) {
 };
 
 Enemy.prototype.getPosition = function() {
+    let left, rigth, bottom, top;
+    left = this.x;
+    top = this.y + 44;
+    rigth = this.x + 101;
+    bottom = this.y + 171;
+
     return {
-        x: this.x,
-        y: this.y
+        left: left,
+        rigth: rigth,
+        top: top,
+        bottom: bottom
     };
 };
 

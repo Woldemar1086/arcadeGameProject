@@ -30,9 +30,16 @@ Player.prototype.getPlayerActivity = function() {
 };
 
 Player.prototype.getPosition = function() {
+    left = this.x;
+    top = this.y + 44;
+    rigth = this.x + 101;
+    bottom = this.y + 171;
+
     return {
-        x: this.x,
-        y: this.y
+        left: left,
+        rigth: rigth,
+        top: top,
+        bottom: bottom
     };
 };
 
@@ -63,6 +70,7 @@ Player.prototype.handleInput = function(code) {
 };
 
 Player.prototype.update = function(code) {
+
 };
 
 Player.prototype.render = function(code) {
