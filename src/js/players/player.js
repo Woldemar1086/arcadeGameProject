@@ -8,13 +8,30 @@ const Resources = require('../resources/resources.js'),
 var Player = function() {
     this.playerBody = undefined;
     this.playerIsActive = false;
-
+    this.lives = 5;
 };
 
 Player.prototype.setPlayer = function(player) {
     this.playerBody = player;
     this.x = 101 * 2;
-    this.y = 83 * 5 - 30;
+    this.y = 83 * 5-10;
+};
+
+Player.prototype.fail = function(player) {
+    this.lives -= 1;
+    if(this.lives = 0){
+        console.log('Show loose modal')
+    }
+    this.returnToStart();
+};
+
+Player.prototype.win = function(player) {
+    
+};
+
+Player.prototype.returnToStart = function() {
+    this.x = 101 * 2;
+    this.y = 83 * 5-10;
 };
 
 Player.prototype.activePlayer = function() {
