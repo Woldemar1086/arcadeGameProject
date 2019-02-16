@@ -1,6 +1,6 @@
-const Resources = require('./resources.js'),
+const Resources = require('./resources/resources.js'),
     utils = require('./utils/utils.js'),
-    player = require('./app.js').player;
+    playerCmp = require('./players/player.js');
 
 var allPlayers = [
         // Player sources
@@ -43,11 +43,15 @@ function addPlayersToModalStart() {
 }
 
 function choosePlayer(e) {
-    // for (var i = playerBody.length - 1; i >= 0; i--) {
-    //     if (playerBody[i].type === player.playerbody) {
-    //         activePlayer.setPlayer(playerBody[i].url);
-    //     }
-    // }
+    var playerData = e.target.dataset,
+        i, len;
+
+    for (i = 0, len = allPlayers.length; i < len; i++) {
+        if (allPlayers[i].indexOf(playerData.bodyType.toLowerCase()) > -1) {
+            playerCmp.player.setPlayer(Resources.get(allPlayers[i]));
+        }
+    }
+
 }
 
 function closeModalStart() {
