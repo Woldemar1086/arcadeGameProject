@@ -68,3 +68,12 @@ img {
     border-color: lightslategray;
     outline: none;
 }
+
+.playerContainer img:hover {
+    width: 110%;
+    cursor: pointer;
+}
+
+.playerContainer img.active {
+    width: 110%;
+}
