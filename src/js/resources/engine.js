@@ -15,8 +15,9 @@
 
 
 const Resources = require('./resources.js'),
-    modalActions = require('./startGame.js'),
-    player = require('./app.js').player;
+    modalActions = require('../startGame.js'),
+    enemyCmp = require('../players/enemy.js'),
+    playerCmp = require('../players/player.js');
 
 /* Predefine the variables we'll be using within this scope,
  * create the canvas element, grab the 2D context for that canvas
@@ -56,7 +57,7 @@ function main() {
      * for the next time this function is called.
      */
     lastTime = now;
-    // console.log(dt)
+
     /* Use the browser's requestAnimationFrame function to call this
      * function again as soon as the browser is able to draw another frame.
      */
@@ -83,8 +84,8 @@ function init() {
  * on the entities themselves within your app.js file).
  */
 function update(dt) {
-    // updateEntities(dt);
-    // checkCollisions();
+    updateEntities(dt);
+    checkCollisions();
 }
 
 /* This is called by the update function and loops through all of the
@@ -95,10 +96,10 @@ function update(dt) {
  * render methods.
  */
 function updateEntities(dt) {
-    allEnemies.forEach(function(enemy) {
+    enemyCmp.allEnemies.forEach(function(enemy) {
         enemy.update(dt);
     });
-    player.update();
+    playerCmp.player.update();
 }
 
 /* This function initially draws the "game level", it will then call
@@ -139,11 +140,14 @@ function render() {
              * so that we get the benefits of caching these images, since
              * we're using them over and over.
              */
+             if(row === 6){
+                debugger;
+             }
             ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
         }
     }
 
-    // renderEntities();
+    renderEntities();
 }
 
 /* This function is called by the render function and is called on each game
@@ -154,11 +158,11 @@ function renderEntities() {
     /* Loop through all of the objects within the allEnemies array and call
      * the render function you have defined.
      */
-    allEnemies.forEach(function(enemy) {
+    enemyCmp.allEnemies.forEach(function(enemy) {
         enemy.render();
     });
 
-    player.render();
+    playerCmp.player.render();
 }
 
 /* This function does nothing but it could have been a good place to
@@ -167,6 +171,16 @@ function renderEntities() {
  */
 function reset() {
     // noop
+}
+
+function checkCollisions(){
+    let enemiesPos = [],
+    playerPos;
+    
+    playerPos = playerCmp.player.getPosition();
+    enemyCmp.allEnemies.forEach(function(enemy) {
+        enemiesPos.push(enemy.getPosition());
+    });
 }
 
 /* Go ahead and load all of the images we know we're going to need to
