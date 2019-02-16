@@ -36,15 +36,16 @@ Enemy.prototype.render = function(dt) {
 };
 
 Enemy.prototype.getPosition = function() {
-    let left, rigth, bottom, top;
+    let left, right, bottom, top;
+    
     left = this.x;
     top = this.y + 44;
-    rigth = this.x + 101;
+    right = this.x + 101;
     bottom = this.y + 171;
 
     return {
         left: left,
-        rigth: rigth,
+        right: right,
         top: top,
         bottom: bottom
     };
