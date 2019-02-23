@@ -129,7 +129,6 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'copy',
         'htmlmin',
-        // 'babel',
         'jshint',
         'browserify',
         'uglify',
