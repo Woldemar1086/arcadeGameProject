@@ -19,6 +19,12 @@ function toggleClass(element, className) {
     element.className = classString;
 }
 
+// Shortcut for create element
+function createEl(tag){
+    return document.createElement(tag);
+}
+
 module.exports = {
-    toggleClass: toggleClass
+    toggleClass: toggleClass,
+    createEl: createEl
 };
