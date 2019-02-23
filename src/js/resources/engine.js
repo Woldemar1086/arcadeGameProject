@@ -15,9 +15,10 @@
 
 
 const Resources = require('./resources.js'),
-    modalActions = require('../startGame.js'),
     enemyCmp = require('../players/enemy.js'),
-    playerCmp = require('../players/player.js');
+    playerCmp = require('../players/player.js'),
+    gameProcess = require('../players/gameProcess.js'),
+    utils = require('../utils/utils.js');
 
 /* Predefine the variables we'll be using within this scope,
  * create the canvas element, grab the 2D context for that canvas
@@ -26,13 +27,15 @@ const Resources = require('./resources.js'),
 
 var doc = window.document,
     win = window.window,
-    canvas = doc.createElement('canvas'),
+    canvas = utils.createEl('canvas'),
     ctx = canvas.getContext('2d'),
+    mainGameContainer = document.getElementById('mainGameContainer'),
+    gameInfoEl = document.getElementById('gameInfo'),
     lastTime, allEnemies;
 
 canvas.width = 505;
 canvas.height = 606;
-doc.body.appendChild(canvas);
+mainGameContainer.insertBefore(canvas, gameInfoEl);
 
 /* This function serves as the kickoff point for the game loop itself
  * and handles properly calling the update and render methods.
@@ -61,7 +64,9 @@ function main() {
     /* Use the browser's requestAnimationFrame function to call this
      * function again as soon as the browser is able to draw another frame.
      */
-    win.requestAnimationFrame(main);
+    if (gameProcess.getGameInProcess()) {
+        win.requestAnimationFrame(main);
+    }
 }
 
 /* This function does some initial setup that should only occur once,
@@ -69,7 +74,6 @@ function main() {
  * game loop.
  */
 function init() {
-    reset();
     lastTime = Date.now();
     main();
 }
@@ -84,8 +88,10 @@ function init() {
  * on the entities themselves within your app.js file).
  */
 function update(dt) {
+    enemyCmp.allEnemies.forEach(function(enemy) {
+        comparePositions(enemy, playerCmp);
+    });
     updateEntities(dt);
-    checkCollisions();
 }
 
 /* This is called by the update function and loops through all of the
@@ -99,7 +105,14 @@ function updateEntities(dt) {
     enemyCmp.allEnemies.forEach(function(enemy) {
         enemy.update(dt);
     });
-    playerCmp.player.update();
+
+    playerCmp.update(enemyCmp.allEnemies);
+
+    if (playerCmp.getScore() >= 15) {
+        reset('You win!');
+    } else if (playerCmp.getLives() <= 0) {
+        reset('Sorry, you lose!');
+    }
 }
 
 /* This function initially draws the "game level", it will then call
@@ -140,14 +153,12 @@ function render() {
              * so that we get the benefits of caching these images, since
              * we're using them over and over.
              */
-             if(row === 6){
-                debugger;
-             }
             ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
         }
     }
 
     renderEntities();
+    gameProcess.update(playerCmp, enemyCmp.allEnemies[0]);
 }
 
 /* This function is called by the render function and is called on each game
@@ -162,25 +173,44 @@ function renderEntities() {
         enemy.render();
     });
 
-    playerCmp.player.render();
+    playerCmp.render();
+}
+
+
+// Compare positions of enemies and player
+// If player meet enemy than will be called player method {#Player.fail}
+function comparePositions(enemy, player) {
+    let playerPos = player.getPosition(),
+        enemyPos = enemy.getPosition(),
+        playerLeft, playerRight, playerTop,
+        enemyLeft, enemyRight, enemyBottom,
+        compareLevelHigh;
+
+    playerLeft = player.x;
+    playerRight = player.x + 101;
+    playerTop = player.y + 70;
+
+    enemyLeft = enemyPos.x + 40;
+    enemyRight = enemyPos.x + 61;
+    enemyBottom = enemyPos.y + 171;
+    enemyTop = enemyPos.y + 70;
+
+    compareLevelHigh = Math.ceil(playerTop / 10) === Math.ceil(enemyTop / 10);
+
+    if (playerLeft < enemyRight && playerRight > enemyLeft && compareLevelHigh) {
+        playerCmp.fail();
+    }
 }
 
 /* This function does nothing but it could have been a good place to
  * handle game reset states - maybe a new game menu or a game over screen
  * those sorts of things. It's only called once by the init() method.
  */
-function reset() {
-    // noop
-}
-
-function checkCollisions(){
-    let enemiesPos = [],
-    playerPos;
-    
-    playerPos = playerCmp.player.getPosition();
-    enemyCmp.allEnemies.forEach(function(enemy) {
-        enemiesPos.push(enemy.getPosition());
-    });
+function reset(result) {
+    gameProcess.setGameInProcess(false);
+    gameProcess.clearGameBoard(canvas);
+    gameProcess.gameInfoVisibility();
+    gameProcess.gameEndModal(result);
 }
 
 /* Go ahead and load all of the images we know we're going to need to
@@ -206,7 +236,7 @@ Resources.load([
     'images/char-princess-girl.png'
 ]);
 // Resources.onReady(init);
-Resources.onReady(modalActions.addPlayersToModalStart);
+Resources.onReady(gameProcess.addPlayersToModalStart);
 
 /* Assign the canvas' context object to the global variable (the window
  * object when run in a browser) so that developers can use it more easily
@@ -216,5 +246,6 @@ window.ctx = ctx;
 
 module.exports = {
     initGame: init,
-    resetGame: reset
+    resetGame: reset,
+    main: main
 };
