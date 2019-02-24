@@ -9,6 +9,17 @@
 
 Open `dist/index.html` file in your browser and play.
 
+Before to start, you have to choose you player. If you will not choose that, 
+you can not start the game.
+
+Use arrow keys to move the player to avoid the enemies and reach the water.
+
+To win you should get the score equal to 15.
+
+With every new score point, the speed of enemies will be increased.
+
+Good luck.
+
 
 ## For developers
 
