@@ -9,7 +9,7 @@
 
 Open `dist/index.html` file in your browser and play.
 
-Before to start, you have to choose you player. If you will not choose that, 
+Before to start, you have to choose your player. If you will not choose that, 
 you can not start the game.
 
 Use arrow keys to move the player to avoid the enemies and reach the water.
